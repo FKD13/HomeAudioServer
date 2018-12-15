@@ -1,0 +1,37 @@
+body {
+	background-color: black;
+}
+
+h1 {
+	color: limegreen;
+}
+
+a {
+	color: limegreen;
+}
+
+td {
+	color: limegreen;
+}
+
+td:hover {
+	background-color:darkgreen;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table, td {
+	border: 2px solid limegreen;
+}
+
+button {
+	border: none;
+	color: limegreen;
+	background-color: black;
+}
+
+button:hover {
+	background-color: darkgreen;
+}
