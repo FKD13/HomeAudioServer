@@ -2,15 +2,7 @@ body {
 	background-color: black;
 }
 
-h1, h2 {
-	color: limegreen;
-}
-
-a {
-	color: limegreen;
-}
-
-td {
+h1, h2, p, a, td {
 	color: limegreen;
 }
 
