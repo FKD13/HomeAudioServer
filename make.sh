@@ -29,9 +29,12 @@ function makehtml() {
 	echo "</table>" >> index.html
 
 	echo "</body>" >> index.html #close the table
-
-	echo -e "<script>\nfunction playNext(element) {\n\tnewid = parseInt(element.id) + 1;\n\tif (newid > $count) {\n\t\tnewid = 1;\n\t}\n\tdocument.getElementById(newid).play();\n}\n</script>" >> index.html
 	
+	if [[ $count -ge 0 ]]
+	then
+		echo -e "<script>\nfunction playNext(element) {\n\tnewid = parseInt(element.id) + 1;\n\tif (newid > $count) {\n\t\tnewid = 1;\n\t}\n\tdocument.getElementById(newid).play();\n}\n</script>" >> index.html
+	fi
+
 	echo "</html>" >> index.html
 	echo -e "\e[92mSUCCES\e[0m\t$1"
 }
