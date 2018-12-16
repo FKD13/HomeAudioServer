@@ -30,7 +30,7 @@ function makehtml() {
 
 	echo "</body>" >> index.html #close the table
 	
-	if [[ $count -ge 0 ]]
+	if [[ $count -gt 1 ]]
 	then
 		echo -e "<script>\nfunction playNext(element) {\n\tnewid = parseInt(element.id) + 1;\n\tif (newid > $count) {\n\t\tnewid = 1;\n\t}\n\tdocument.getElementById(newid).play();\n}\n</script>" >> index.html
 	fi
