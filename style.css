@@ -27,3 +27,7 @@ button {
 button:hover {
 	background-color: darkgreen;
 }
+
+canvas {
+	border: 1px solid limegreen;
+}

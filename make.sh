@@ -1,6 +1,11 @@
 #!bin/bash
 
-subdirs="$(find /var/www/html/* -type d | sed 's/$/\//' | tr '\n' ' ' )"
+subdirs="$(find $PWD/* -type d | sed 's/$/\//' | tr '\n' ' ' )"
+maindir="$PWD/"
+
+function add() {
+	echo -e "$1" >> index.html
+}
 
 function makehtml() {
 	#find all files in this directory
@@ -9,40 +14,84 @@ function makehtml() {
 	directories="$(find -maxdepth 1 -type d | sort | tr '\n' ' ')"
 	
 	#create empty index.html
-	echo -e "<!DOCTYPE html>\n<html>\n<head>\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"http://fkserver/style.css\">\n</head>\n<body>" > index.html
+	echo -e "" > index.html
+	add "<!DOCTYPE html>\n<html>\n<head>\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"${maindir}style.css\">\n</head>\n<body>"
 	
-	echo -e "\t<h1>$(pwd | sed 's/^.*\///')</h1>" >> index.html
+	add "\t<h1>$(pwd | sed 's/^.*\///')</h1>"
 	#add link to all subdirs
 	for d in $directories
 	do
-		echo -e "\t<a href=\"$d\">$d</a><br>" >> index.html
+		if [[ $d != "." ]]
+		then
+			add "\t<a href=\"$d\">$d</a><br>"
+		fi
 	done
 	
 	#add all songs to the index.html
-	echo "<table>" >> index.html #make a table
+	add "<table>" #make a table
 	count=1
 	for file in $files
 	do
-		echo -e "\t<tr>\n\t\t<td>$file</td>\n\t\t<td><button id=\"${count}a\" type=\"button\" onclick=\"play(this)\">Play</button></td><td><button id=\"${count}b\" type=\"button\" onclick=\"stop(this)\">Pause</button><audio id=\"$count\" onended=\"playNext(this)\"><source src=\"$file\" type=\"audio/mpeg\">No Audio For You</audio></td>\n\t</tr>" >> index.html
+		add "\t<tr>\n\t\t<td>$file</td>\n\t\t<td><button id=\"a${count}\" type=\"button\" onclick=\"play(this)\">Play</button></td><td><button id=\"b${count}\" type=\"button\" onclick=\"stop(this)\">Pause</button><audio id=\"$count\" onended=\"playNext(this)\" ontimeupdate=\"updateBar(this)\"><source src=\"$file\" type=\"audio/mpeg\">No Audio For You</audio></td>\n\t</tr>"
 
 		count=$((count + 1))
 	done
-	echo "</table>" >> index.html #close the table
+	add "</table>" #close the table
 
-	echo "<h2 id=\"playing\">Now playing: none</h2>" >> index.html
 	
-	echo "</body>" >> index.html 
 	
 	if [[ $count -gt 1 ]]
 	then
-		echo -e "<script>" >> index.html
-		echo -e "function playNext(element) {\n\tnewid = parseInt(element.id) + 1;\n\tif (newid > $count) {\n\t\tnewid = 1;\n\t}\n\tdocument.getElementById(newid).play();\n}" >> index.html
-		echo -e "function play(element) {\n\tlet id = element.id.substring(0,1);\ndocument.getElementById(id).play();\ndocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + id;\n}" >> index.html
-		echo -e "function stop(element) {\n\tlet id = element.id.substring(0,1);\ndocument.getElementById(id).pause();\ndocument.getElementById(\"playing\").innerHTML = \"Now playing: none\";\n}" >> index.html
-		echo -e "</script>" >> index.html
+		add "<h2 id=\"playing\">Now playing: none</h2>"
+		add "<canvas id=\"progress\" width=\"500\" height=\"25\"></canvas>"
+		add "</body>"
+		
+		add "<script>"
+		add "let canvas = document.getElementById(\"progress\").getContext('2d');"
+		add "let nowPlaying = document.getElementById('1');"
+
+		add "function updatePlaying(id) {"
+		add "\tnowPlaying = document.getElementById(id);\n}"
+
+		add "function clearCanvas() {"
+		add "\tcanvas.fillStyle = \"#000000\";"
+		add "\tcanvas.fillRect(0,0,500,25)\n}"
+		
+		add "function updateBar(element) {"
+		add "\tlet audio = element;"
+		add "\tlet currentTime = audio.currentTime;"
+		add "\tlet duration = audio.duration;"
+		add "\tlet progress = (500 * (currentTime / duration));"
+		add "\tcanvas.fillStyle = \"#00FF00\";"
+		add "\tcanvas.fillRect(0,0,progress,25);\n}"
+
+		add "function playNext(element) {"
+		add "\tclearCanvas();"
+		add "\tnewid = parseInt(element.id) + 1;"
+		add "\tif (newid > $count) {"
+		add "\t\tnewid = 1;\n\t}"
+		add "\tupdatePlaying(newid);"
+		add "\tdocument.getElementById(newid).play();"
+		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + newid;\n}"
+
+		add "function play(element) {"
+		add "\tclearCanvas();"
+		add "\tlet id = element.id.substring(1);"
+		add "\tnowPlaying.pause();"
+		add "\tupdatePlaying(id);"
+		add "\tdocument.getElementById(id).play();"
+		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + id;\n}"
+		add "function stop(element) {"
+		add "\tclearCanvas();"
+		add "\tlet id = element.id.substring(1);"
+		add "\tdocument.getElementById(id).pause();"
+		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: none\";\n}"
+		add "</script>"
+	else
+		add "</body>"
 	fi
 
-	echo "</html>" >> index.html
+	add "</html>"
 	echo -e "\e[92m\e[1mSUCCES\e[0m\t$1"
 }
 
