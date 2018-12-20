@@ -15,7 +15,7 @@ function makehtml() {
 	
 	#create empty index.html
 	echo -e "" > index.html
-	add "<!DOCTYPE html>\n<html>\n<head>\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"${maindir}style.css\">\n</head>\n<body>"
+	add "<!DOCTYPE html>\n<html>\n<head>\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">\n</head>\n<body>"
 	
 	add "\t<h1>$(pwd | sed 's/^.*\///')</h1>"
 	#add link to all subdirs
@@ -66,13 +66,13 @@ function makehtml() {
 		add "\tcanvas.fillRect(0,0,progress,25);\n}"
 
 		add "function playNext(element) {"
-		add "\tclearCanvas();"
 		add "\tnewid = parseInt(element.id) + 1;"
 		add "\tif (newid > $count) {"
 		add "\t\tnewid = 1;\n\t}"
 		add "\tupdatePlaying(newid);"
 		add "\tdocument.getElementById(newid).play();"
-		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + newid;\n}"
+		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + newid;"
+		add "\twindow.setTimeout(clearCanvas,50);\n}"
 
 		add "function play(element) {"
 		add "\tclearCanvas();"
@@ -80,12 +80,15 @@ function makehtml() {
 		add "\tnowPlaying.pause();"
 		add "\tupdatePlaying(id);"
 		add "\tdocument.getElementById(id).play();"
-		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + id;\n}"
+		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + id;"
+		add "\twindow.setTimeout(clearCanvas,50);\n}"
+		
 		add "function stop(element) {"
 		add "\tclearCanvas();"
 		add "\tlet id = element.id.substring(1);"
 		add "\tdocument.getElementById(id).pause();"
-		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: none\";\n}"
+		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: none\";"
+		add "\twindow.setTimeout(clearCanvas,50);\n}"
 		add "</script>"
 	else
 		add "</body>"
