@@ -43,7 +43,7 @@ function makehtml() {
 	if [[ $count -gt 1 ]]
 	then
 		add "<h2 id=\"playing\">Now playing: none</h2>"
-		add "<canvas id=\"progress\" width=\"500\" height=\"25\"></canvas>"
+		add "<canvas id=\"progress\" width=\"1000\" height=\"25\"></canvas>"
 		add "</body>"
 		
 		add "<script src=\"/handle.js\">"

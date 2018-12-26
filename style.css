@@ -12,6 +12,7 @@ td:hover {
 
 table {
 	border-collapse: collapse;
+	width: 40%;
 }
 
 table, td {
@@ -30,4 +31,6 @@ button:hover {
 
 canvas {
 	border: 1px solid limegreen;
+	width: 100%;
+	height: 20px;
 }
