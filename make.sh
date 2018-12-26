@@ -46,52 +46,8 @@ function makehtml() {
 		add "<canvas id=\"progress\" width=\"500\" height=\"25\"></canvas>"
 		add "</body>"
 		
-		add "<script>"
-		add "let canvas = document.getElementById(\"progress\").getContext('2d');"
-		add "let nowPlaying = document.getElementById('1');"
-
-		add "function updatePlaying(id) {"
-		add "\tnowPlaying = document.getElementById(id);\n}"
-
-		add "function clearCanvas() {"
-		add "\tcanvas.fillStyle = \"#000000\";"
-		add "\tcanvas.fillRect(0,0,500,25)\n}"
-		
-		add "function updateBar(element) {"
-		add "\tlet audio = element;"
-		add "\tlet currentTime = audio.currentTime;"
-		add "\tlet duration = audio.duration;"
-		add "\tlet progress = (500 * (currentTime / duration));"
-		add "\tcanvas.fillStyle = \"#00FF00\";"
-		add "\tcanvas.fillRect(0,0,progress,25);\n}"
-
-		add "function playNext(element) {"
-		add "\tnewid = parseInt(element.id) + 1;"
-		add "\tif (newid > $count) {"
-		add "\t\tnewid = 1;\n\t}"
-		add "\tupdatePlaying(newid);"
-		add "\tdocument.getElementById(newid).play();"
-		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + newid;"
-		add "\twindow.setTimeout(clearCanvas,50);\n}"
-
-		add "function play(element) {"
-		add "\tclearCanvas();"
-		add "\tlet id = element.id.substring(1);"
-		add "\tnowPlaying.pause();"
-		add "\tupdatePlaying(id);"
-		add "\tdocument.getElementById(id).play();"
-		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: \" + id;"
-		add "\twindow.setTimeout(clearCanvas,50);\n}"
-		
-		add "function stop(element) {"
-		add "\tclearCanvas();"
-		add "\tlet id = element.id.substring(1);"
-		add "\tdocument.getElementById(id).pause();"
-		add "\tdocument.getElementById(\"playing\").innerHTML = \"Now playing: none\";"
-		add "\twindow.setTimeout(clearCanvas,50);\n}"
+		add "<script src=\"/handle.js\">"
 		add "</script>"
-	else
-		add "</body>"
 	fi
 
 	add "</html>"
