@@ -43,7 +43,7 @@ function makehtml() {
 	if [[ $count -gt 1 ]]
 	then
 		add "<h2 id=\"playing\">Now playing: none</h2>"
-		add "<canvas id=\"progress\" width=\"500\" height=\"25\"></canvas>"
+		add "<canvas id=\"progress\" width=\"1000\" height=\"25\"></canvas>"
 		add "</body>"
 		
 		add "<script>"
@@ -55,13 +55,13 @@ function makehtml() {
 
 		add "function clearCanvas() {"
 		add "\tcanvas.fillStyle = \"#000000\";"
-		add "\tcanvas.fillRect(0,0,500,25)\n}"
+		add "\tcanvas.fillRect(0,0,1000,25)\n}"
 		
 		add "function updateBar(element) {"
 		add "\tlet audio = element;"
 		add "\tlet currentTime = audio.currentTime;"
 		add "\tlet duration = audio.duration;"
-		add "\tlet progress = (500 * (currentTime / duration));"
+		add "\tlet progress = (1000 * (currentTime / duration));"
 		add "\tcanvas.fillStyle = \"#00FF00\";"
 		add "\tcanvas.fillRect(0,0,progress,25);\n}"
 
